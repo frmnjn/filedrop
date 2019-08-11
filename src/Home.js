@@ -1,7 +1,5 @@
 import React from 'react';
-import FileDrop from 'react-file-drop';
 import './App.css'
-import {Label} from 'reactstrap';
   
 class Home extends React.Component {
     handleDrop = (files, event) => {
@@ -10,12 +8,8 @@ class Home extends React.Component {
 
     render() {
         return (
-            <div className="file-drop bawahindikit">
-                <FileDrop onDrop={this.handleDrop}>
-                    <Label>
-                    Drop some files here!
-                    </Label>
-                </FileDrop>
+            <div className="bawahindikit">
+                <h1>HALOO</h1>
             </div>
         );
     }

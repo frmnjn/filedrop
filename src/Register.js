@@ -33,7 +33,6 @@ class Register extends Component {
   }
 
   validatePassword(e) {
-    const strongRex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
     const mediumRex = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})/;
     const { validate } = this.state
     if (mediumRex.test(e.target.value)) {
@@ -55,8 +54,16 @@ class Register extends Component {
 
   submitForm(e) {
     e.preventDefault();
-    console.log(`Name: ${this.state.name}`)
-    console.log(`Email: ${this.state.email}`)
+    var url = 'http://localhost:8000/register';
+    var obj = {name:this.state.name,username:this.state.email,password:this.state.password};
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(obj), // data can be `string` or {object}!
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      .then(response => console.log('Success:', response));
   }
 
   render() {
@@ -74,7 +81,7 @@ class Register extends Component {
                 id="name"
                 placeholder="Your Name"
                 value={name}
-                onChange={ (e) => this.handleChange(e) }
+                onChange={(e) => this.handleChange(e)}
               />
             </FormGroup>
           </Col>

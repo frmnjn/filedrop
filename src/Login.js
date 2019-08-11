@@ -41,7 +41,20 @@ class Login extends Component {
 
   submitForm(e) {
     e.preventDefault();
-    console.log(`Email: ${ this.state.email }`)
+    var url = 'http://localhost:8000/login';
+    var obj = {username:this.state.email,password:this.state.password};
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(obj), // data can be `string` or {object}!
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      .then(response => {
+        console.log('Success:', response);
+        localStorage.setItem('jwtTokenValue', response.token);
+        this.props.history.push('/drop');
+      });
   }
 
   render() {
