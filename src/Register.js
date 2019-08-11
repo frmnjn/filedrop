@@ -1,144 +1,105 @@
-import React, { Component } from 'react';
-import {
-  Container, Col, Form,
-  FormGroup, Label, Input,
-  Button, FormText, FormFeedback,
-} from 'reactstrap';
-import './App.css';
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      'name': '',
-      'email': '',
-      'password': '',
-      validate: {
-        emailState: '',
-        passwordState: ''
-      },
+      name: '',
+      username: '',
+      password: ''
     }
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  validateEmail(e) {
-    const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const { validate } = this.state
-    if (emailRex.test(e.target.value)) {
-      validate.emailState = 'has-success'
-    } else {
-      validate.emailState = 'has-danger'
-    }
-    this.setState({ validate })
-  }
-
-  validatePassword(e) {
-    const mediumRex = /^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{8,})/;
-    const { validate } = this.state
-    if (mediumRex.test(e.target.value)) {
-      validate.passwordState = 'has-success'
-    } else {
-      validate.passwordState = 'has-warning'
-    }
-    this.setState({ validate })
-  }
-
-  handleChange = async (event) => {
-    const { target } = event;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const { name } = target;
-    await this.setState({
-      [name]: value,
-    });
-  }
-
-  submitForm(e) {
+  handleForm = e => {
     e.preventDefault();
     var url = 'http://localhost:8000/register';
-    var obj = {name:this.state.name,username:this.state.email,password:this.state.password};
+    var obj = {
+      name:this.state.name,
+      username:this.state.email,
+      password:this.state.password
+    };
+
     fetch(url, {
       method: 'POST',
-      body: JSON.stringify(obj), // data can be `string` or {object}!
+      body: JSON.stringify(obj),
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => res.json())
       .catch(error => console.error('Error:', error))
-      .then(response => console.log('Success:', response));
-  }
+      .then(response => {
+        console.log('Success:', response);
+        this.props.setLogin(response.user);
+        localStorage.setItem('token', response.token);
+        this.props.history.push('/home');
+      });
+  };
+
+  handleInput = e => {
+    e.preventDefault();
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ [name]: value });
+  };
 
   render() {
-    const { name, email, password } = this.state;
     return (
-      <Container className="Login">
-        <h2>Register</h2>
-        <Form className="form" onSubmit={(e) => this.submitForm(e)}>
-          <Col>
-            <FormGroup>
-              <Label for="YourName">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Your Name"
-                value={name}
-                onChange={(e) => this.handleChange(e)}
-              />
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label>Username</Label>
-              <Input
-                type="email"
-                name="email"
-                id="exampleEmail"
-                placeholder="myemail@email.com"
-                value={email}
-                valid={this.state.validate.emailState === 'has-success'}
-                invalid={this.state.validate.emailState === 'has-danger'}
-                onChange={(e) => {
-                  this.validateEmail(e)
-                  this.handleChange(e)
-                }}
-              />
-              <FormFeedback valid>
-                That's a tasty looking email you've got there.
-              </FormFeedback>
-              <FormFeedback>
-                Uh oh! Looks like there is an issue with your email. Please input a correct email.
-              </FormFeedback>
-              <FormText>Your username is most likely your email.</FormText>
-            </FormGroup>
-          </Col>
-          <Col>
-            <FormGroup>
-              <Label for="examplePassword">Password</Label>
-              <Input
-                type="password"
-                name="password"
-                id="examplePassword"
-                placeholder="********"
-                value={password}
-                valid={this.state.validate.passwordState === 'has-success'}
-                invalid={this.state.validate.passwordState === 'has-warning'}
-                onChange={(e) => {
-                  this.validatePassword(e)
-                  this.handleChange(e)
-                }}
-              />
-              <FormFeedback valid>
-                Strong Password
-              </FormFeedback>
-              <FormFeedback>
-                Weak Password
-              </FormFeedback>
-            </FormGroup>
-          </Col>
-          <Button>Submit</Button>
-        </Form>
-      </Container>
+      <div className="flex">
+        <div className="w-1/3" />
+        <div className="w-1/3 mt-10 p-4 bg-white">
+          <form className="border border-gray-500" onSubmit={this.handleForm}>
+            <div className="p-4">
+              <h1 className="text-lg border-b border-gray-500">Register</h1>
+              <div className="mt-4">
+                <label>Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your great name"
+                  onChange={this.handleInput}
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
+              <div className="mt-4">
+                <label>Username</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Lovely Email"
+                  onChange={this.handleInput}
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
+              <div className="mt-4">
+                <label>Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  onChange={this.handleInput}
+                  placeholder="Super Duper Secret Password"
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
+              <div className="mt-4">
+                <input
+                  type="submit"
+                  value="Register"
+                  className="mt-1 p-2 border border-gray-400 rounded cursor-pointer bg-purple-600 text-white"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     );
   }
 }
 
-export default Register;
+const mapDispatchToProps = dispatch => {
+  return {
+    setLogin: user => dispatch({ type: "SET_LOGIN", payload: user })
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(Register);
