@@ -6,7 +6,6 @@ class Layout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: props.username,
       loggedIn: false
     };
   }
@@ -60,8 +59,7 @@ class Layout extends Component {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: state.auth.loggedIn,
-    username: state.auth.user.username
+    loggedIn: state.auth.loggedIn
   };
 };
 

@@ -48,7 +48,7 @@ class Login extends Component {
               <div className="mt-4">
                 <label>Username</label>
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   placeholder="Lovely Email"
                   onChange={this.handleInput}

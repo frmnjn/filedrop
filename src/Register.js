@@ -6,6 +6,7 @@ class Register extends Component {
     this.state = {
       name: '',
       username: '',
+      email:'',
       password: ''
     }
   }
@@ -15,7 +16,8 @@ class Register extends Component {
     var url = 'http://localhost:8000/register';
     var obj = {
       name:this.state.name,
-      username:this.state.email,
+      username:this.state.username,
+      email:this.state.email,
       password:this.state.password
     };
 
@@ -61,6 +63,16 @@ class Register extends Component {
               </div>
               <div className="mt-4">
                 <label>Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Unique username"
+                  onChange={this.handleInput}
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
+              <div className="mt-4">
+                <label>Email</label>
                 <input
                   type="email"
                   name="email"
