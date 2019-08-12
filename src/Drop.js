@@ -16,7 +16,7 @@ class Drop extends Component {
     //define message container
     let err = [];
     // list allow mime type
-    const types = ["video/mp4","image/png", "image/jpeg", "image/gif", "image/jpeg"];
+    const types = ["image/png", "image/jpeg", "image/gif", "image/jpeg"];
     // loop access array
     for (var x = 0; x < files.length; x++) {
       // compare file type find doesn't matach
@@ -80,7 +80,7 @@ class Drop extends Component {
     }
     var config = {
       onUploadProgress: progressEvent => {
-        console.log('uploading...');
+        console.log("uploading...");
         // var percentCompleted = Math.round(
         //   (progressEvent.loaded * 100) / progressEvent.total
         // );
@@ -151,9 +151,9 @@ class Drop extends Component {
               </div>
             </div>
           </form>
-  
+
           {/* <Progress completed={this.state.progressVal} /> */}
-          {this.state.isLoaded ? notify : ''}
+          {this.state.isLoaded ? notify : ""}
         </div>
       </div>
     );
