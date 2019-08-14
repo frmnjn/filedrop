@@ -12,7 +12,6 @@ class Layout extends Component {
   handleLogout = e => {
     e.preventDefault();
     localStorage.removeItem("token");
-    localStorage.removeItem("username");
     this.props.logout();
   };
   render() {
@@ -69,7 +68,7 @@ class Layout extends Component {
                     Create Drop Link
                   </Link>
                   <Link
-                    to="/profile"
+                    to="/profile/edit"
                     className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-400 mr-4"
                   >
                     Account
@@ -103,6 +102,7 @@ const mapDispatchToProps = dispatch => {
     logout: () => dispatch({ type: "SET_LOGOUT" })
   };
 };
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps

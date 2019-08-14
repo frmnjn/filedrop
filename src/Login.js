@@ -4,24 +4,24 @@ import Error from "./components/Error";
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "", errors: {} };
+    this.state = { username: "", password: "" };
   }
   handleForm = e => {
     e.preventDefault();
-    var url = 'http://localhost:8000/login';
-    var obj = {username:this.state.email,password:this.state.password};
+    var url = "http://localhost:8000/login";
+    var obj = { username: this.state.username, password: this.state.password };
     fetch(url, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(obj),
-      headers: { 'Content-Type': 'application/json' }
+      headers: { "Content-Type": "application/json" }
     })
       .then(res => res.json())
-      .catch(error => console.error('Error:', error))
+      .catch(error => console.error("Error:", error))
       .then(response => {
-        console.log('Success:', response);
+        console.log("Success:", response);
         this.props.setLogin(response.user);
-        localStorage.setItem('token', response.token);
-        this.props.history.push('/home');
+        localStorage.setItem("token", response.token);
+        this.props.history.push("/home");
       });
   };
   handleInput = e => {
@@ -38,28 +38,14 @@ class Login extends Component {
           <form className="border border-gray-500" onSubmit={this.handleForm}>
             <div className="p-4">
               <h1 className="text-lg border-b border-gray-500">Login</h1>
-              <Error
-                error={
-                  this.state.errors["result"]
-                    ? this.state.errors["result"]
-                    : null
-                }
-              />
               <div className="mt-4">
                 <label>Username</label>
                 <input
                   type="text"
-                  name="email"
-                  placeholder="Lovely Email"
+                  name="username"
+                  placeholder="Your Username"
                   onChange={this.handleInput}
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
-                />
-                <Error
-                  error={
-                    this.state.errors["email"]
-                      ? this.state.errors["email"]
-                      : null
-                  }
                 />
               </div>
               <div className="mt-4">
@@ -70,13 +56,6 @@ class Login extends Component {
                   onChange={this.handleInput}
                   placeholder="Super Duper Secret Password"
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
-                />
-                <Error
-                  error={
-                    this.state.errors["password"]
-                      ? this.state.errors["password"]
-                      : null
-                  }
                 />
               </div>
               <div className="mt-4">

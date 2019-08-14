@@ -3,7 +3,7 @@ import "./css/tailwind.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./Home";
 import Login from "./Login";
-import Profile from "./Profile";
+import EditAkun from "./EditAkun";
 import Drop from "./Drop";
 import Register from "./Register";
 import CreateDropLink from "./CreateDropLink";
@@ -21,7 +21,7 @@ function App() {
           <GuestRoute exact path="/drop/:username/:droplink" component={Drop} />
           <GuestRoute path="/login" component={Login} />
           <GuestRoute path="/register" component={Register} />
-          <AuthRoute path="/profile" component={Profile} />
+          <AuthRoute path="/profile/edit" component={EditAkun} />
           <AuthRoute path="/home" component={Home} />
           <AuthRoute path="/createdroplink" component={CreateDropLink} />
         </div>

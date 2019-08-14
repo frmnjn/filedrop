@@ -10,6 +10,7 @@ class Home extends Component {
     this.state = {
       id: props.id,
       username: props.username,
+      email: props.email,
       name: props.name,
       droplinks: [],
       isLoaded: false
@@ -83,7 +84,8 @@ const mapStateToProps = state => {
   return {
     id: state.auth.user.id,
     name: state.auth.user.name,
-    username: state.auth.user.username
+    username: state.auth.user.username,
+    email: state.auth.user.email
   };
 };
 
