@@ -57,6 +57,12 @@ class Layout extends Component {
               <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
                 <div className="text-md lg:flex-grow">
                   <Link
+                    to="/home"
+                    className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-400 mr-4"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
                     to="/createdroplink"
                     className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-400 mr-4"
                   >
