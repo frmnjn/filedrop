@@ -1,15 +1,41 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Progress from "react-progressbar";
+import BeatLoader from "react-spinners/BeatLoader";
+import "./App.css";
+
 class Drop extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedFile: null,
-      isLoaded: false,
-      progressVal: 0
+      uploadFinished: false,
+      progressVal: 0,
+      linkValid: false,
+      linkChecked: false
     };
   }
+
+  componentDidMount() {
+    var obj = {
+      username: this.props.match.params.username,
+      droplink: this.props.match.params.droplink
+    };
+    fetch("http://localhost:8000/checkdroplink", {
+      method: "POST",
+      body: JSON.stringify(obj),
+      headers: { "Content-Type": "application/json" }
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => {
+        this.setState({
+          linkChecked: true,
+          linkValid: response.success
+        });
+        //console.log("Success:", response);
+      });
+  }
+
   checkMimeType = event => {
     //getting file object
     let files = event.target.files;
@@ -36,7 +62,7 @@ class Drop extends Component {
   maxSelectFile = event => {
     let files = event.target.files;
     if (files.length > 3) {
-      const msg = "Only 3 images can be upisLoaded at a time";
+      const msg = "Only 3 images can be uploaded at a time";
       event.target.value = null;
       console.log(msg);
       return false;
@@ -88,13 +114,20 @@ class Drop extends Component {
       }
     };
     axios
-      .post("http://localhost:8000/drop", data, config)
+      .post(
+        "http://localhost:8000/drop/" +
+          this.props.match.params.username +
+          "/" +
+          this.props.match.params.droplink,
+        data,
+        config
+      )
       .then(res => {
         // then print response status
         console.log("upload success");
         console.log(res.data);
         this.setState({
-          isLoaded: true
+          uploadFinished: true
         });
       })
       .catch(err => {
@@ -120,11 +153,19 @@ class Drop extends Component {
       </div>
     );
 
-    // const progressbar = (
-    //   // <Progress completed={Math.round(this.state.progressVal)} />
-    //   <Progress completed={this.state.progressVal} />
-    // );
-    return (
+    const spinner = (
+      <div className="sweet-loading exact-center">
+        <BeatLoader
+          sizeUnit={"px"}
+          size={30}
+          color={"#38B2AC"}
+          loading={!this.state.linkValid}
+        />
+        checking link ...
+      </div>
+    );
+
+    const viewTrue = (
       <div className="flex">
         <div className="w-1/3" />
         <div className="w-1/3 mt-10 p-4 bg-white">
@@ -151,10 +192,25 @@ class Drop extends Component {
               </div>
             </div>
           </form>
-
-          {/* <Progress completed={this.state.progressVal} /> */}
-          {this.state.isLoaded ? notify : ""}
+          {this.state.uploadFinished ? notify : ""}
         </div>
+      </div>
+    );
+
+    const viewFalse = (
+      <div className="exact-center text-3xl">
+        <h1>Error 404</h1>
+        <h1>Link Not Found</h1>
+      </div>
+    );
+
+    return (
+      <div>
+        {this.state.linkChecked
+          ? this.state.linkValid
+            ? viewTrue
+            : viewFalse
+          : spinner}
       </div>
     );
   }

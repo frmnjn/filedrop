@@ -80,6 +80,7 @@ class CreateDropLink extends Component {
                 <input
                   type="submit"
                   className="mt-1 p-2 border border-gray-400 rounded cursor-pointer bg-purple-600 text-white"
+                  value="Create"
                 />
               </div>
               {this.state.isCreated ? notify : ""}

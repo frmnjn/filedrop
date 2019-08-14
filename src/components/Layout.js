@@ -18,11 +18,11 @@ class Layout extends Component {
   render() {
     return (
       <div>
-        <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-1">
+        <nav className="flex items-center justify-between flex-wrap bg-orange-500 p-3 sticky">
           <Link to="/">
             <div className="flex items-center flex-shrink-0 text-white mr-6">
               <svg
-                className="fill-current h-8 w-8 mr-2"
+                className="fill-current h-8 w-8 ml-3 mr-2"
                 width="54"
                 height="54"
                 viewBox="0 0 54 54"
@@ -41,13 +41,13 @@ class Layout extends Component {
                 <div className="text-md lg:flex-grow">
                   <Link
                     to="/login"
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-400 mr-4"
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-400 mr-4"
                   >
                     Register
                   </Link>
@@ -58,20 +58,20 @@ class Layout extends Component {
                 <div className="text-md lg:flex-grow">
                   <Link
                     to="/createdroplink"
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-400 mr-4"
                   >
                     Create Drop Link
                   </Link>
                   <Link
                     to="/profile"
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-400 mr-4"
                   >
                     Account
                   </Link>
                   <Link
                     to="/logout"
                     onClick={this.handleLogout}
-                    className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-yellow-400 mr-4"
                   >
                     Logout
                   </Link>

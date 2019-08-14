@@ -10,10 +10,10 @@
     "react": "^16.9.0",
     "react-dom": "^16.8.6",
     "react-file-drop": "^0.2.8",
-    "react-progressbar": "^15.4.1",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-spinners": "^0.5.12",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "typescript": "^3.5.3"
