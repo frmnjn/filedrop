@@ -5,6 +5,7 @@ import Home from "./Home";
 import Login from "./Login";
 import EditAkun from "./EditAkun";
 import Drop from "./Drop";
+import ListFiles from "./ListFiles";
 import Register from "./Register";
 import CreateDropLink from "./CreateDropLink";
 import GuestRoute from "./components/GuestRoute";
@@ -24,6 +25,11 @@ function App() {
           <AuthRoute path="/profile/edit" component={EditAkun} />
           <AuthRoute path="/home" component={Home} />
           <AuthRoute path="/createdroplink" component={CreateDropLink} />
+          <AuthRoute
+            exact
+            path="/:username/files/:folder"
+            component={ListFiles}
+          />
         </div>
       </Layout>
     </Router>

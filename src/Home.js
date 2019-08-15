@@ -18,8 +18,8 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    console.log("ownerId", this.state.id);
-    console.log("token", localStorage.getItem("token"));
+    // console.log("ownerId", this.state.id);
+    // console.log("token", localStorage.getItem("token"));
     var url = "http://localhost:8000/getdroplinks";
     var obj = {
       ownerId: this.state.id
@@ -46,6 +46,8 @@ class Home extends Component {
 
   render() {
     this.props.SET_USER(this.state);
+    var droplinks = this.state.droplinks;
+    var username = this.state.username;
 
     const spinner = (
       <div className="sweet-loading exact-center">
@@ -65,8 +67,8 @@ class Home extends Component {
           Your Drop Link
         </div>
         <div class="w-full h-12 p-6">
-          {this.state.droplinks.map(function(droplink) {
-            return <DropLinkCard name={droplink.name} />;
+          {droplinks.map(function(droplink) {
+            return <DropLinkCard name={droplink.name} username={username} />;
           })}
         </div>
       </div>
