@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Auth } from "aws-amplify";
-class ForgotPassword extends Component {
+import { Link } from "react-router-dom";
+class ChangePasword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
+      oldPassword: "",
+      newPassword: "",
       cognito_error: null,
       toggle_error: false
     };
@@ -19,36 +21,35 @@ class ForgotPassword extends Component {
 
   handleForm = async e => {
     e.preventDefault();
-    // var url = "http://localhost:8000/login";
-    // var obj = { username: this.state.username, password: this.state.password };
-    // fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify(obj),
-    //   headers: { "Content-Type": "application/json" }
-    // })
-    //   .then(res => res.json())
-    //   .catch(error => console.error("Error:", error))
-    //   .then(response => {
-    //     console.log("Success:", response);
-    //     this.props.setLogin(response.user);
-    //     localStorage.setItem("token", response.token);
-    //     this.props.history.push("/home");
-    //   });
     try {
-      await Auth.forgotPassword(this.state.email);
-      this.props.history.push("/forgotpasswordverification");
+      const userObject = await Auth.signIn(
+        this.state.username,
+        this.state.password
+      );
+      console.log(userObject);
+      this.props.setLogin({
+        username: userObject.username,
+        name: userObject.attributes.name,
+        email: userObject.attributes.email
+      });
+      this.props.history.push("/profile/edit");
     } catch (error) {
+      if (error != null) {
+        this.setState({
+          cognito_error: error.message,
+          toggle_error: true
+        });
+      }
+
       console.log(error);
     }
   };
-
   handleInput = e => {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
     this.setState({ [name]: value });
   };
-
   render() {
     return (
       <div className="flex">
@@ -57,15 +58,25 @@ class ForgotPassword extends Component {
           <form className="border border-gray-500" onSubmit={this.handleForm}>
             <div className="p-4">
               <h1 className="text-lg border-b border-gray-500">
-                Forgot Password
+                Change Password
               </h1>
               <div className="mt-4">
-                <label>Email</label>
+                <label>Old Password</label>
                 <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
+                  type="password"
+                  name="oldPassword"
+                  placeholder="Your Old Password"
                   onChange={this.handleInput}
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
+              <div className="mt-4">
+                <label>New Password</label>
+                <input
+                  type="password"
+                  name="newPassword"
+                  onChange={this.handleInput}
+                  placeholder="Super New Password"
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
                 />
               </div>
@@ -109,4 +120,4 @@ class ForgotPassword extends Component {
   }
 }
 
-export default ForgotPassword;
+export default ChangePasword;

@@ -1,12 +1,14 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
-class ForgotPassword extends Component {
+import { Link } from "react-router-dom";
+class ForgotPasswordVerification extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      cognito_error: null,
-      toggle_error: false
+      verificationCode: null,
+      email: null,
+      newPassword: null
     };
     this.handleToggle = this.handleToggle.bind(this);
   }
@@ -19,24 +21,14 @@ class ForgotPassword extends Component {
 
   handleForm = async e => {
     e.preventDefault();
-    // var url = "http://localhost:8000/login";
-    // var obj = { username: this.state.username, password: this.state.password };
-    // fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify(obj),
-    //   headers: { "Content-Type": "application/json" }
-    // })
-    //   .then(res => res.json())
-    //   .catch(error => console.error("Error:", error))
-    //   .then(response => {
-    //     console.log("Success:", response);
-    //     this.props.setLogin(response.user);
-    //     localStorage.setItem("token", response.token);
-    //     this.props.history.push("/home");
-    //   });
     try {
-      await Auth.forgotPassword(this.state.email);
-      this.props.history.push("/forgotpasswordverification");
+      const status = await Auth.forgotPasswordSubmit(
+        this.state.email,
+        this.state.verificationCode,
+        this.state.newPassword
+      );
+
+      this.props.history.push("/login");
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +40,6 @@ class ForgotPassword extends Component {
     const value = e.target.value;
     this.setState({ [name]: value });
   };
-
   render() {
     return (
       <div className="flex">
@@ -57,15 +48,35 @@ class ForgotPassword extends Component {
           <form className="border border-gray-500" onSubmit={this.handleForm}>
             <div className="p-4">
               <h1 className="text-lg border-b border-gray-500">
-                Forgot Password
+                Forgot Password Verification
               </h1>
+              <div className="mt-4">
+                <label>Verification Code</label>
+                <input
+                  type="text"
+                  name="verificationCode"
+                  placeholder="Your Verification Code"
+                  onChange={this.handleInput}
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
               <div className="mt-4">
                 <label>Email</label>
                 <input
                   type="email"
                   name="email"
-                  placeholder="Your Email"
                   onChange={this.handleInput}
+                  placeholder="Your Email"
+                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
+                />
+              </div>
+              <div className="mt-4">
+                <label>New Password</label>
+                <input
+                  type="password"
+                  name="newPassword"
+                  onChange={this.handleInput}
+                  placeholder="Your New Password"
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
                 />
               </div>
@@ -109,4 +120,4 @@ class ForgotPassword extends Component {
   }
 }
 
-export default ForgotPassword;
+export default ForgotPasswordVerification;

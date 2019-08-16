@@ -11,7 +11,6 @@ class Layout extends Component {
   }
   handleLogout = e => {
     e.preventDefault();
-    localStorage.removeItem("token");
     this.props.logout();
   };
   render() {

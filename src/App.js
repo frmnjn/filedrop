@@ -10,6 +10,9 @@ import Drop from "./Drop";
 import ListFiles from "./ListFiles";
 import Register from "./Register";
 import ForgotPassword from "./ForgotPassword";
+import ChangePassword from "./ChangePassword";
+import ForgotPasswordVerification from "./ForgotPasswordVerification";
+import ForgotPasswordConfirmation from "./ForgotPasswordConfirmation";
 import Welcome from "./Welcome";
 import CreateDropLink from "./CreateDropLink";
 import GuestRoute from "./components/GuestRoute";
@@ -100,6 +103,17 @@ class App extends Component {
               <GuestRoute exact path="/login" component={Login} />
               <GuestRoute exact path="/register" component={Register} />
               <Route exact path="/forgotpassword" component={ForgotPassword} />
+              <Route exact path="/changepassword" component={ChangePassword} />
+              <Route
+                exact
+                path="/forgotpasswordverification"
+                component={ForgotPasswordVerification}
+              />
+              <Route
+                exact
+                path="/forgotpasswordconfirmation"
+                component={ForgotPasswordConfirmation}
+              />
               <AuthRoute exact path="/profile/edit" component={EditAkun} />
               <AuthRoute exact path="/home" component={Home} />
               <AuthRoute
