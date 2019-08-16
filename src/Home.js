@@ -9,7 +9,7 @@ class Home extends Component {
     super(props);
     this.state = {
       id: props.id,
-      username: props.username,
+      ownerUsername: props.username,
       email: props.email,
       name: props.name,
       droplinks: [],
@@ -22,7 +22,7 @@ class Home extends Component {
     // console.log("token", localStorage.getItem("token"));
     var url = "http://localhost:8000/getdroplinks";
     var obj = {
-      ownerId: this.state.id
+      ownerUsername: this.state.ownerUsername
     };
 
     fetch(url, {
@@ -45,9 +45,8 @@ class Home extends Component {
   }
 
   render() {
-    this.props.SET_USER(this.state);
     var droplinks = this.state.droplinks;
-    var username = this.state.username;
+    var ownerUsername = this.state.ownerUsername;
 
     const spinner = (
       <div className="sweet-loading exact-center">
@@ -68,7 +67,9 @@ class Home extends Component {
         </div>
         <div class="w-full h-12 p-6">
           {droplinks.map(function(droplink) {
-            return <DropLinkCard name={droplink.name} username={username} />;
+            return (
+              <DropLinkCard name={droplink.name} username={ownerUsername} />
+            );
           })}
         </div>
       </div>
@@ -84,7 +85,6 @@ class Home extends Component {
 
 const mapStateToProps = state => {
   return {
-    id: state.auth.user.id,
     name: state.auth.user.name,
     username: state.auth.user.username,
     email: state.auth.user.email

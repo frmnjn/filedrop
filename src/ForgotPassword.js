@@ -1,13 +1,10 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
-import { Link } from "react-router-dom";
-class Login extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      password: "",
+      email: "",
       cognito_error: null,
       toggle_error: false
     };
@@ -37,35 +34,15 @@ class Login extends Component {
     //     localStorage.setItem("token", response.token);
     //     this.props.history.push("/home");
     //   });
-    try {
-      const userObject = await Auth.signIn(
-        this.state.username,
-        this.state.password
-      );
-      console.log(userObject);
-      this.props.setLogin({
-        username: userObject.username,
-        name: userObject.attributes.name,
-        email: userObject.attributes.email
-      });
-      this.props.history.push("/profile/edit");
-    } catch (error) {
-      if (error != null) {
-        this.setState({
-          cognito_error: error.message,
-          toggle_error: true
-        });
-      }
-
-      console.log(error);
-    }
   };
+
   handleInput = e => {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
     this.setState({ [name]: value });
   };
+
   render() {
     return (
       <div className="flex">
@@ -73,34 +50,18 @@ class Login extends Component {
         <div className="w-1/3 mt-10 p-4 bg-white">
           <form className="border border-gray-500" onSubmit={this.handleForm}>
             <div className="p-4">
-              <h1 className="text-lg border-b border-gray-500">Login</h1>
+              <h1 className="text-lg border-b border-gray-500">
+                Forgot Password
+              </h1>
               <div className="mt-4">
-                <label>Username</label>
+                <label>Email</label>
                 <input
-                  type="text"
-                  name="username"
-                  placeholder="Your Username"
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
                   onChange={this.handleInput}
                   className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
                 />
-              </div>
-              <div className="mt-4">
-                <label>Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  onChange={this.handleInput}
-                  placeholder="Super Duper Secret Password"
-                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
-                />
-              </div>
-              <div className="mt-4">
-                <Link
-                  to="/forgotpassword"
-                  className="hover:underline text-blue-500"
-                >
-                  Forgot Password
-                </Link>
               </div>
               <div className="mt-4">
                 <input
@@ -142,12 +103,4 @@ class Login extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setLogin: user => dispatch({ type: "SET_LOGIN", payload: user })
-  };
-};
-export default connect(
-  null,
-  mapDispatchToProps
-)(Login);
+export default ForgotPassword;

@@ -17,7 +17,7 @@ class Drop extends Component {
 
   componentDidMount() {
     var obj = {
-      username: this.props.match.params.username,
+      ownerUsername: this.props.match.params.username,
       droplink: this.props.match.params.droplink
     };
     fetch("http://localhost:8000/checkdroplink", {

@@ -85,18 +85,6 @@ class EditAkun extends Component {
                 Edit Your Details
               </h1>
               <div className="mt-4">
-                <label>ID</label>
-                <input
-                  type="text"
-                  name="id"
-                  placeholder="Your Account ID"
-                  onChange={this.handleInput}
-                  value={this.state.id}
-                  className="mt-1 p-2 bg-gray-200 rounded border border-gray-400 w-full"
-                  disabled
-                />
-              </div>
-              <div className="mt-4">
                 <label>Name</label>
                 <input
                   type="text"
