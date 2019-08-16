@@ -7,6 +7,7 @@ import EditAkun from "./EditAkun";
 import Drop from "./Drop";
 import ListFiles from "./ListFiles";
 import Register from "./Register";
+import Welcome from "./Welcome";
 import CreateDropLink from "./CreateDropLink";
 import GuestRoute from "./components/GuestRoute";
 import AuthRoute from "./components/AuthRoute";
@@ -18,13 +19,14 @@ function App() {
       <Layout>
         <div className="bg-gray-300 h-screen">
           <Route exact path="/" component={index} />
+          <Route exact path="/welcome" component={Welcome} />
           {/* <GuestRoute path="/drop" component={Drop} /> */}
           <GuestRoute exact path="/drop/:username/:droplink" component={Drop} />
-          <GuestRoute path="/login" component={Login} />
-          <GuestRoute path="/register" component={Register} />
-          <AuthRoute path="/profile/edit" component={EditAkun} />
-          <AuthRoute path="/home" component={Home} />
-          <AuthRoute path="/createdroplink" component={CreateDropLink} />
+          <GuestRoute exact path="/login" component={Login} />
+          <GuestRoute exact path="/register" component={Register} />
+          <AuthRoute exact path="/profile/edit" component={EditAkun} />
+          <AuthRoute exact path="/home" component={Home} />
+          <AuthRoute exact path="/createdroplink" component={CreateDropLink} />
           <AuthRoute
             exact
             path="/:username/files/:folder"

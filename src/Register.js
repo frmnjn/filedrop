@@ -1,39 +1,63 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Auth } from "aws-amplify";
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      username: '',
-      email:'',
-      password: ''
-    }
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+      cognito_error: null
+    };
   }
 
-  handleForm = e => {
+  handleForm = async e => {
     e.preventDefault();
-    var url = 'http://localhost:8000/register';
-    var obj = {
-      name:this.state.name,
-      username:this.state.username,
-      email:this.state.email,
-      password:this.state.password
-    };
+    // var url = 'http://localhost:8000/register';
+    // var obj = {
+    //   name:this.state.name,
+    //   username:this.state.username,
+    //   email:this.state.email,
+    //   password:this.state.password
+    // };
 
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(obj),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .catch(error => console.error('Error:', error))
-      .then(response => {
-        console.log('Success:', response);
-        this.props.setLogin(response.user);
-        localStorage.setItem('token', response.token);
-        this.props.history.push('/home');
+    // fetch(url, {
+    //   method: 'POST',
+    //   body: JSON.stringify(obj),
+    //   headers: { 'Content-Type': 'application/json' }
+    // })
+    //   .then(res => res.json())
+    //   .catch(error => console.error('Error:', error))
+    //   .then(response => {
+    //     console.log('Success:', response);
+    //     this.props.setLogin(response.user);
+    //     localStorage.setItem('token', response.token);
+    //     this.props.history.push('/home');
+    //   });
+
+    //AWS COGNITO
+    const name = this.state.name;
+    const username = this.state.username;
+    const email = this.state.email;
+    const password = this.state.password;
+    try {
+      const signUpResponse = await Auth.signUp({
+        username,
+        password,
+        attributes: {
+          name: name,
+          email: email
+        }
       });
+      console.log(signUpResponse);
+      this.props.history.push("/welcome");
+    } catch (error) {
+      this.setState({
+        cognito_error: error
+      });
+    }
   };
 
   handleInput = e => {
@@ -51,6 +75,7 @@ class Register extends Component {
           <form className="border border-gray-500" onSubmit={this.handleForm}>
             <div className="p-4">
               <h1 className="text-lg border-b border-gray-500">Register</h1>
+              {/* <h1>{this.state.cognito_error}</h1> */}
               <div className="mt-4">
                 <label>Name</label>
                 <input
