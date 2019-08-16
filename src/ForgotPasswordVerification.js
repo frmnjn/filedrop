@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
-import { Link } from "react-router-dom";
 class ForgotPasswordVerification extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +20,7 @@ class ForgotPasswordVerification extends Component {
   handleForm = async e => {
     e.preventDefault();
     try {
-      const status = await Auth.forgotPasswordSubmit(
+      await Auth.forgotPasswordSubmit(
         this.state.email,
         this.state.verificationCode,
         this.state.newPassword

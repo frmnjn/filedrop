@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { Auth } from "aws-amplify";
 
 class Layout extends Component {
   constructor(props) {
@@ -9,9 +10,16 @@ class Layout extends Component {
       loggedIn: false
     };
   }
-  handleLogout = e => {
+  handleLogout = async e => {
     e.preventDefault();
-    this.props.logout();
+    try {
+      Auth.signOut();
+      this.props.logout();
+      this.props.SET_USER(null);
+      this.props.history.push("/");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   render() {
     return (
@@ -98,7 +106,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logout: () => dispatch({ type: "SET_LOGOUT" })
+    logout: () => dispatch({ type: "SET_LOGOUT" }),
+    SET_USER: user => dispatch({ type: "SET_USER", payload: user })
   };
 };
 
