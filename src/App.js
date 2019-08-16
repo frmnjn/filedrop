@@ -11,8 +11,8 @@ import ListFiles from "./ListFiles";
 import Register from "./Register";
 import ForgotPassword from "./ForgotPassword";
 import ChangePassword from "./ChangePassword";
+import ChangePasswordConfirmation from "./ChangePasswordConfirmation";
 import ForgotPasswordVerification from "./ForgotPasswordVerification";
-import ForgotPasswordConfirmation from "./ForgotPasswordConfirmation";
 import Welcome from "./Welcome";
 import CreateDropLink from "./CreateDropLink";
 import GuestRoute from "./components/GuestRoute";
@@ -111,8 +111,8 @@ class App extends Component {
               />
               <Route
                 exact
-                path="/forgotpasswordconfirmation"
-                component={ForgotPasswordConfirmation}
+                path="/changepasswordconfirmation"
+                component={ChangePasswordConfirmation}
               />
               <AuthRoute exact path="/profile/edit" component={EditAkun} />
               <AuthRoute exact path="/home" component={Home} />

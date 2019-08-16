@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./App.css";
 
-class ForgotPasswordConfirmation extends Component {
+class ChangePasswordConfirmation extends Component {
   render() {
     return (
       <div>
@@ -21,4 +21,4 @@ class ForgotPasswordConfirmation extends Component {
   }
 }
 
-export default ForgotPasswordConfirmation;
+export default ChangePasswordConfirmation;

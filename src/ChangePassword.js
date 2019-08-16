@@ -22,17 +22,14 @@ class ChangePasword extends Component {
   handleForm = async e => {
     e.preventDefault();
     try {
-      const userObject = await Auth.signIn(
-        this.state.username,
-        this.state.password
+      const user = await Auth.currentAuthenticatedUser();
+      console.log(user);
+      await Auth.changePassword(
+        user,
+        this.state.oldPassword,
+        this.state.newPassword
       );
-      console.log(userObject);
-      this.props.setLogin({
-        username: userObject.username,
-        name: userObject.attributes.name,
-        email: userObject.attributes.email
-      });
-      this.props.history.push("/profile/edit");
+      this.props.history.push("/changepasswordconfirmation");
     } catch (error) {
       if (error != null) {
         this.setState({
@@ -40,7 +37,6 @@ class ChangePasword extends Component {
           toggle_error: true
         });
       }
-
       console.log(error);
     }
   };
