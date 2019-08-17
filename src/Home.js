@@ -12,7 +12,7 @@ class Home extends Component {
       email: props.email,
       name: props.name,
       droplinks: [],
-      isLoaded: false
+      isLoading: false
     };
   }
 
@@ -36,7 +36,7 @@ class Home extends Component {
       .catch(error => console.error("Error:", error))
       .then(response => {
         this.setState({
-          isLoaded: true,
+          isLoading: true,
           droplinks: response.droplinks
         });
         console.log(this.state.droplinks);
@@ -53,9 +53,9 @@ class Home extends Component {
           sizeUnit={"px"}
           size={30}
           color={"#38B2AC"}
-          loading={this.state.isLoaded}
+          loading={this.state.isLoading}
         />
-        checking link ...
+        Loading files ...
       </div>
     );
 
@@ -76,7 +76,7 @@ class Home extends Component {
 
     return (
       <div class="flex flex-col mb-4 w-full">
-        {this.state.isLoaded ? viewLoaded : spinner}
+        {this.state.isLoading ? viewLoaded : spinner}
       </div>
     );
   }

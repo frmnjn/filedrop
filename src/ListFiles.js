@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import BeatLoader from "react-spinners";
+import { BeatLoader } from "react-spinners";
 import ReactTable from "react-table";
 import "../node_modules/react-table/react-table.css";
 import { Link } from "react-router-dom";
@@ -14,7 +14,7 @@ class ListFiles extends Component {
       email: props.email,
       name: props.name,
       files: [],
-      isLoaded: false
+      isLoading: true
     };
   }
 
@@ -38,7 +38,7 @@ class ListFiles extends Component {
       .catch(error => console.error("Error:", error))
       .then(response => {
         this.setState({
-          isLoaded: true,
+          isLoading: false,
           files: response.data
         });
       });
@@ -53,7 +53,7 @@ class ListFiles extends Component {
           color={"#38B2AC"}
           loading={true}
         />
-        getting files ...
+        Loading files ...
       </div>
     );
 
@@ -123,7 +123,7 @@ class ListFiles extends Component {
       />
     );
 
-    return <div>{this.state.isLoaded ? viewLoaded : "Loading Data"}</div>;
+    return <div>{!this.state.isLoading ? viewLoaded : spinner}</div>;
   }
 }
 
