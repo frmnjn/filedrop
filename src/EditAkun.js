@@ -66,15 +66,15 @@ class EditAkun extends Component {
     );
 
     return (
-      <div className="flex w-full">
-        <aside className="w-1/6 bg-black h-screen">
+      <div className="flex w-full h-full">
+        <aside className="w-1/5 bg-black">
           <ul className="text-white p-4">
             <Link to="/EditAkun">
               <li className="bg-gray-900 py-0 px-0 rounded">Edit Account</li>
             </Link>
           </ul>
         </aside>
-        <section className="w-5/6 bg-white flex justify-center">
+        <section className="w-4/5 bg-white flex justify-center">
           <form
             className="border border-gray-500 w-1/2 my-5 rounded"
             onSubmit={this.handleForm}

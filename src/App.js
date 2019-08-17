@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./css/tailwind.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Link, BrowserRouter as Router, Route } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import Home from "./Home";
 import Login from "./Login";
@@ -15,9 +15,12 @@ import ChangePasswordConfirmation from "./ChangePasswordConfirmation";
 import ForgotPasswordVerification from "./ForgotPasswordVerification";
 import Welcome from "./Welcome";
 import CreateDropLink from "./CreateDropLink";
+import DownloadFile from "./DownloadFile";
 import GuestRoute from "./components/GuestRoute";
 import AuthRoute from "./components/AuthRoute";
 import Layout from "./components/Layout";
+import DropZone from "./components/DropZone";
+import DropCopy from "./DropCopy";
 
 class App extends Component {
   state = {
@@ -41,8 +44,8 @@ class App extends Component {
 
   render() {
     const index = () => (
-      <div id="app">
-        <div className="bg-gray-100 flex">
+      <div className="bg-gray-300">
+        <div>
           <div className="px-8 py-12 max-w-md mx-auto sm:max-w-xl lg:max-w-full lg:w-1/2 lg:py-24 lg:px-12">
             <div className="xl:max-w-lg xl:ml-auto">
               <img
@@ -66,21 +69,9 @@ class App extends Component {
               </p>
               <div className="mt-4 sm:mt-6">
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  Create a DropLink
+                  <Link to="/login">Create a DropLink</Link>
                 </button>
               </div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className="max-w-md sm:max-w-xl lg:max-w-6xl mx-auto px-8 lg:px-12 py-8">
-            <h2 className="text-xl text-gray-900">Popular destinations</h2>
-            <p className="text-gray-600">
-              A selection of great work-friendly cities with lots to see and
-              explore.
-            </p>
-            <div className="flex flex-wrap -mx-4">
-              <div className="mt-6 w-full px-4 lg:w-1/2 xl:w-1/3" />
             </div>
           </div>
         </div>
@@ -90,44 +81,47 @@ class App extends Component {
     return (
       !this.state.isAuthenticating && (
         <Router>
-          <Layout>
-            <div className="bg-gray-300 h-screen">
-              <Route exact path="/" component={index} />
-              <Route exact path="/welcome" component={Welcome} />
-              {/* <GuestRoute path="/drop" component={Drop} /> */}
-              <GuestRoute
-                exact
-                path="/drop/:username/:droplink"
-                component={Drop}
-              />
-              <GuestRoute exact path="/login" component={Login} />
-              <GuestRoute exact path="/register" component={Register} />
-              <Route exact path="/forgotpassword" component={ForgotPassword} />
-              <Route exact path="/changepassword" component={ChangePassword} />
-              <Route
-                exact
-                path="/forgotpasswordverification"
-                component={ForgotPasswordVerification}
-              />
-              <Route
-                exact
-                path="/changepasswordconfirmation"
-                component={ChangePasswordConfirmation}
-              />
-              <AuthRoute exact path="/profile/edit" component={EditAkun} />
-              <AuthRoute exact path="/home" component={Home} />
-              <AuthRoute
-                exact
-                path="/createdroplink"
-                component={CreateDropLink}
-              />
-              <AuthRoute
-                exact
-                path="/:username/files/:folder"
-                component={ListFiles}
-              />
-            </div>
-          </Layout>
+          <div className="bg-gray-300 h-screen">
+            <Layout />
+            <Route exact path="/" component={index} />
+            <Route exact path="/welcome" component={Welcome} />
+            {/* <GuestRoute path="/drop" component={Drop} /> */}
+            <GuestRoute
+              exact
+              path="/drop/:username/:droplink"
+              component={Drop}
+            />
+            <GuestRoute exact path="/login" component={Login} />
+            <GuestRoute exact path="/register" component={Register} />
+            <Route exact path="/forgotpassword" component={ForgotPassword} />
+            <Route exact path="/changepassword" component={ChangePassword} />
+            <Route
+              exact
+              path="/forgotpasswordverification"
+              component={ForgotPasswordVerification}
+            />
+            <Route
+              exact
+              path="/changepasswordconfirmation"
+              component={ChangePasswordConfirmation}
+            />
+            <Route exact path="/downloadfile" component={DownloadFile} />
+            <Route exact path="/dropzone" component={DropZone} />
+            <Route exact path="/dropcopy" component={DropCopy} />
+            <AuthRoute exact path="/profile/edit" component={EditAkun} />
+            <AuthRoute exact path="/home" component={Home} />
+            <AuthRoute
+              exact
+              path="/createdroplink"
+              component={CreateDropLink}
+            />
+            <AuthRoute
+              exact
+              path="/:username/files/:folder"
+              component={ListFiles}
+            />
+          </div>
+          {/* </Layout> */}
         </Router>
       )
     );
