@@ -13,7 +13,7 @@ class Layout extends Component {
   handleLogout = async e => {
     e.preventDefault();
     try {
-      Auth.signOut();
+      await Auth.signOut();
       this.props.logout();
       this.props.SET_USER(null);
       this.props.history.push("/");

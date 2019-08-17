@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { BeatLoader } from "react-spinners";
 
 class CreateDropLink extends Component {
   constructor(props) {
@@ -44,6 +45,17 @@ class CreateDropLink extends Component {
     this.setState({ [name]: value });
   };
   render() {
+    const spinner = (
+      <div className="sweet-loading exact-center">
+        <BeatLoader
+          sizeUnit={"px"}
+          size={30}
+          color={"#38B2AC"}
+          loading={this.state.isAuthenticating}
+        />
+        Signing in ...
+      </div>
+    );
     const notify = (
       <div
         className="flex items-center bg-green-500 text-white text-sm font-bold px-4 py-3"

@@ -48,16 +48,26 @@ class App extends Component {
         <div>
           <div className="px-8 py-12 max-w-md mx-auto sm:max-w-xl lg:max-w-full lg:w-1/2 lg:py-24 lg:px-12">
             <div className="xl:max-w-lg xl:ml-auto">
-              <img
+              {/* <img
                 className="h-10"
                 src={require("./assets/img/logo-blue.svg")}
                 alt="Workcation"
-              />
-              <img
-                className="mt-6 rounded-lg shadow-xl sm:mt-8 sm:h-72 sm:w-full sm:object-cover sm:object-center lg:hidden"
-                src="/img/beach-work.jpg"
-                alt="Woman workcationing on the beach"
-              />
+              /> */}
+              <div className="h-10">
+                <svg
+                  className="fill-current h-8 w-8 ml-3 mr-2"
+                  width="54"
+                  height="54"
+                  viewBox="0 0 54 54"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z" />
+                </svg>
+                <span className="font-semibold text-xl tracking-tight">
+                  FileDrop
+                </span>
+              </div>
+
               <h1 className="mt-6 text-2xl font-bold text-gray-900 leading-tight sm:mt-8 sm:text-4xl lg:text-3xl xl:text-4xl">
                 You can collect or drop your files easily.
                 <br className="hidden lg:inline" />

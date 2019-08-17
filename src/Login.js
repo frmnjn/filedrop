@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
 import { Link } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
+
 class Login extends Component {
   constructor(props) {
     super(props);
