@@ -10,7 +10,8 @@ class CreateDropLink extends Component {
       name: props.name,
       username: props.username,
       dropLinkName: "",
-      isCreated: false
+      isCreated: false,
+      shared: null
     };
   }
   handleForm = e => {
@@ -33,7 +34,12 @@ class CreateDropLink extends Component {
       .catch(error => console.error("Error:", error))
       .then(response => {
         this.setState({
-          isCreated: true
+          isCreated: true,
+          shared:
+            "http://localhost:3000/drop/" +
+            this.state.username +
+            "/" +
+            this.state.dropLinkName
         });
         console.log("Server Response:", response);
       });
@@ -53,7 +59,7 @@ class CreateDropLink extends Component {
           color={"#38B2AC"}
           loading={this.state.isAuthenticating}
         />
-        Signing in ...
+        Creating Droplink ...
       </div>
     );
     const notify = (
@@ -73,7 +79,9 @@ class CreateDropLink extends Component {
           <p>
             Share this link to your friends!
             <br />
-            http://localhost/drop/frmnjn/{this.state.dropLinkName}
+            <a href={this.state.shared}>
+              http://localhost:3000/drop/frmnjn/{this.state.dropLinkName}
+            </a>
           </p>
         </p>
       </div>

@@ -44,8 +44,12 @@ class Home extends Component {
   }
 
   render() {
-    var droplinks = this.state.droplinks;
-    var ownerUsername = this.state.ownerUsername;
+    var droplinks = [],
+      ownerUsername = null;
+    if (this.state.droplinks && this.state.ownerUsername) {
+      droplinks = this.state.droplinks;
+      ownerUsername = this.state.ownerUsername;
+    }
 
     const spinner = (
       <div className="sweet-loading exact-center">
@@ -65,7 +69,11 @@ class Home extends Component {
         <div class="w-full h-12 p-6">
           {droplinks.map(function(droplink) {
             return (
-              <DropLinkCard name={droplink.name} username={ownerUsername} />
+              <DropLinkCard
+                name={droplink.name}
+                username={droplink.ownerUsername}
+                id={droplink.id}
+              />
             );
           })}
         </div>
@@ -90,7 +98,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    SET_USER: user => dispatch({ type: "SET_USER", payload: user })
+    SET_USER: user => dispatch({ type: "SET_USER", payload: user }),
+    SET_ACTIVE_DROPLINK: droplink =>
+      dispatch({ type: "SET_ACTIVE_DROPLINK", payload: droplink })
   };
 };
 
