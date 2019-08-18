@@ -96,11 +96,7 @@ class App extends Component {
             <Route exact path="/" component={index} />
             <Route exact path="/welcome" component={Welcome} />
             {/* <GuestRoute path="/drop" component={Drop} /> */}
-            <GuestRoute
-              exact
-              path="/drop/:username/:droplink"
-              component={Drop}
-            />
+            <Route exact path="/drop/:username/:droplink" component={Drop} />
             <GuestRoute exact path="/login" component={Login} />
             <GuestRoute exact path="/register" component={Register} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />

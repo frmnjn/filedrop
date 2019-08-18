@@ -17,7 +17,7 @@ class CreateDropLink extends Component {
     e.preventDefault();
     var url = "http://localhost:8000/createdroplink";
     var obj = {
-      ownerId: this.state.id,
+      ownerUsername: this.state.username,
       dropLinkName: this.state.dropLinkName
     };
 

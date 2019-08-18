@@ -61,9 +61,7 @@ class Home extends Component {
 
     const viewLoaded = (
       <div className="">
-        <div class="text-black text-center bg-teal-500 px-4 py-2 font-bold text-xl">
-          Your DropLinks
-        </div>
+        <div class="text-black px-4 py-2 font-bold text-xl">Your DropLinks</div>
         <div class="w-full h-12 p-6">
           {droplinks.map(function(droplink) {
             return (

@@ -13,20 +13,27 @@ class ListFiles extends Component {
       username: props.username,
       email: props.email,
       name: props.name,
+      currentFolder: null,
       files: [],
       isLoading: true
     };
+
+    this.fetchdata = this.fetchdata.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("files page");
+    this.fetchdata();
+  }
+
+  async fetchdata() {
     var url = "http://localhost:8000/getlistfiles";
     var obj = {
       username: this.state.username,
       folder: this.props.match.params.folder
     };
 
-    fetch(url, {
+    await fetch(url, {
       method: "POST",
       body: JSON.stringify(obj),
       headers: {
@@ -37,12 +44,72 @@ class ListFiles extends Component {
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
+        var split = response.data[0].Key.split("/");
+        // var currentFolder = "test";
         this.setState({
           isLoading: false,
-          files: response.data
+          files: response.data,
+          currentFolder: split[1]
         });
+
+        console.log("currentFolder: ", this.state.currentFolder);
       });
   }
+
+  downloadAllFiles = e => {
+    e.preventDefault();
+    var url = "http://localhost:8000/downloadzip";
+    var obj = {
+      test: this.state.files
+    };
+    fetch(url, {
+      method: "GET"
+      // body: JSON.stringify(obj),
+      // headers: {
+      // "Content-Type": "application/json"
+      // }
+    });
+    // .then(res => res.json())
+    // .catch(error => console.error("Error:", error))
+    // .then(response => {
+    //   this.setState({
+    //     isLoading: false
+    //     // files: response.data
+    //   });
+    //   console.log(response);
+    // });
+  };
+
+  deleteFile = async (e, Key) => {
+    e.preventDefault();
+    this.setState({ isLoading: true });
+    console.log(Key);
+    var url = "http://localhost:8000/deletefile";
+    var obj = {
+      Key: Key
+    };
+
+    fetch(url, {
+      method: "DELETE",
+      body: JSON.stringify(obj),
+      headers: {
+        "Content-Type": "application/json"
+        // "Access-Control-Allow-Origin": "*"
+      }
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => {
+        console.log(response);
+      })
+      .then(this.fetchdata);
+
+    // let data = this.state.files;
+    // const newData = data.map(d => ({ ...d }));
+    // console.log("newData", newData);
+    // this.setState({ files: newData, isLoading: false });
+    // console.log("newFiles", this.state.files);
+  };
 
   render() {
     const spinner = (
@@ -58,69 +125,114 @@ class ListFiles extends Component {
     );
 
     const viewLoaded = (
-      <ReactTable
-        data={this.state.files}
-        defaultPageSize={10}
-        filterable
-        columns={[
-          {
-            Header: "File Name",
-            accessor: "Key" // String-based value accessors!
-          },
-          {
-            Header: "Size",
-            accessor: "Size" // String-based value accessors!
-          },
-          {
-            Header: "Last Modified",
-            accessor: "LastModified" // String-based value accessors!
-          },
-          {
-            Header: "Actions",
-            accessor: "Key", // String-based value accessors!
-            filterable: false,
-            maxWidth: 150,
-            Cell: row => (
-              <div>
-                <div className="m-2 inline">
-                  <a href="http://google.com">
-                    <button class="bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
+      <div className="bg-gray-300">
+        <div class="block px-4 py-2">
+          <h1 className="text-black font-bold text-xl">List Files</h1>
+        </div>
+        <div class="block px-4 py-3">
+          <a
+            href={
+              "http://localhost:8000/download/" +
+              this.state.username +
+              "/" +
+              this.state.currentFolder
+            }
+          >
+            <button class="bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2">
+              <span>Download All</span>
+            </button>
+            <button class="bg-red-300 hover:bg-red-400 text-gray-800 font-bold p-2 rounded inline-flex items-center">
+              <span>Delete All</span>
+            </button>
+          </a>
+        </div>
+        <div className="w-auto block px-4 py-2  max-h-screen">
+          <ReactTable
+            data={this.state.files}
+            defaultPageSize={9}
+            filterable={false}
+            sortable={false}
+            columns={[
+              {
+                Header: "File Name",
+                accessor: "Key", // String-based value accessors!
+                Cell: row => {
+                  var split = row.row.Key.split("/");
+                  return <span className="text">{split[2]}</span>;
+                }
+              },
+              {
+                Header: "Size",
+                accessor: "Size", // String-based value accessors!
+                maxWidth: 150,
+                Cell: row => {
+                  var bytes = row.row.Size / 1024;
+                  return <span className="text">{bytes.toFixed(1)} KB</span>;
+                }
+              },
+              {
+                Header: "Last Modified",
+                accessor: "LastModified", // String-based value accessors!
+                Cell: row => {
+                  var date = Date(row.row.LastModified);
+                  return <span className="text">{date}</span>;
+                }
+              },
+              {
+                Header: "Actions",
+                accessor: "Key", // String-based value accessors!
+                filterable: false,
+                maxWidth: 150,
+                Cell: row => (
+                  <div>
+                    <div className="mr-2 inline">
+                      <a
+                        href={
+                          "http://d1u37cwdvjwb8j.cloudfront.net/" + row.row.Key
+                        }
                       >
-                        <path
-                          class="heroicon-ui"
-                          d="M11 14.59V3a1 1 0 0 1 2 0v11.59l3.3-3.3a1 1 0 0 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 1.4-1.42l3.3 3.3zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"
-                        />
-                      </svg>
-                    </button>
-                  </a>
-                </div>
-                <div className="m-2 inline">
-                  <a href="http://google.com">
-                    <button class="bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
-                      >
-                        <path
-                          class="heroicon-ui"
-                          d="M16.24 14.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 0 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12l2.83 2.83z"
-                        />
-                      </svg>
-                    </button>
-                  </a>
-                </div>
-              </div>
-            )
-          }
-        ]}
-      />
+                        <button
+                          class="bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-1 px-2 rounded inline-flex items-center"
+                          // onClick={e => this.downloadFile(e, row.row.Key)}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="20"
+                            height="20"
+                          >
+                            <path
+                              class="heroicon-ui"
+                              d="M11 14.59V3a1 1 0 0 1 2 0v11.59l3.3-3.3a1 1 0 0 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 1.4-1.42l3.3 3.3zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"
+                            />
+                          </svg>
+                        </button>
+                      </a>
+                    </div>
+                    <div className="mr-2 inline">
+                      <a onClick={e => this.deleteFile(e, row.row.Key)}>
+                        <button class="bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-1 px-2 rounded inline-flex items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="20"
+                            height="20"
+                          >
+                            <path
+                              class="heroicon-ui"
+                              d="M16.24 14.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 0 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12l2.83 2.83z"
+                            />
+                          </svg>
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                )
+              }
+            ]}
+          />
+        </div>
+      </div>
     );
 
     return <div>{!this.state.isLoading ? viewLoaded : spinner}</div>;
