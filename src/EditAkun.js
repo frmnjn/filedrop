@@ -22,28 +22,33 @@ class EditAkun extends Component {
 
   render() {
     return (
-      <div class="flex px-4 py-4 w-full">
-        <Link to="/">
-          <div className="flex-1 max-w-sm rounded overflow-hidden shadow-lg mr-2">
-            <div className="px-6 py-4 bg-white hover:bg-orange-200">
-              <div className="font-bold text-xl mb-2">Edit Account</div>
+      <div>
+        <div class="text-black px-4 py-2 font-bold text-xl">
+          Account Settings
+        </div>
+        <div class="flex p-6 w-full">
+          <Link to="/">
+            <div className="flex-1 max-w-sm rounded overflow-hidden shadow-lg mr-2">
+              <div className="px-6 py-4 bg-white hover:bg-orange-200">
+                <div className="font-bold text-xl mb-2">Edit Account</div>
+              </div>
             </div>
-          </div>
-        </Link>
-        <Link to="/changepassword">
-          <div className="flex-1 max-w-sm rounded overflow-hidden shadow-lg mr-2">
-            <div className="px-6 py-4 bg-white hover:bg-orange-200">
-              <div className="font-bold text-xl mb-2">Change Password</div>
+          </Link>
+          <Link to="/changepassword">
+            <div className="flex-1 max-w-sm rounded overflow-hidden shadow-lg mr-2">
+              <div className="px-6 py-4 bg-white hover:bg-orange-200">
+                <div className="font-bold text-xl mb-2">Change Password</div>
+              </div>
             </div>
-          </div>
-        </Link>
-        <Link to="/" onClick={this.handleLogout}>
-          <div className="flex-1 max-w-sm rounded overflow-hidden shadow-lg mr-2">
-            <div className="px-6 py-4 bg-white hover:bg-orange-200">
-              <div className="font-bold text-xl mb-2">Log Out</div>
+          </Link>
+          <Link to="/" onClick={this.handleLogout}>
+            <div className="flex-1 max-w-sm rounded overflow-hidden shadow-lg mr-2">
+              <div className="px-6 py-4 bg-white hover:bg-orange-200">
+                <div className="font-bold text-xl mb-2">Log Out</div>
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
       </div>
     );
   }

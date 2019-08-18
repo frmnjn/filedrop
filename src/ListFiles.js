@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { BeatLoader } from "react-spinners";
 import ReactTable from "react-table";
 import "../node_modules/react-table/react-table.css";
-import { Link } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 class ListFiles extends Component {
   constructor(props) {
@@ -20,6 +21,30 @@ class ListFiles extends Component {
 
     this.fetchdata = this.fetchdata.bind(this);
   }
+
+  submit = (e, row) => {
+    e.preventDefault();
+    confirmAlert({
+      title: "Confirm to submit",
+      message: "Are you sure want to delete this?",
+      buttons: [
+        {
+          label: "Cancel",
+          onClick: () => {
+            e.preventDefault();
+            console.log("canceled");
+          }
+        },
+        {
+          label: "Yes",
+          onClick: () => {
+            e.preventDefault();
+            this.deleteFile(e, row);
+          }
+        }
+      ]
+    });
+  };
 
   async componentDidMount() {
     console.log("files page");
@@ -44,16 +69,30 @@ class ListFiles extends Component {
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
-        var split = response.data[0].Key.split("/");
-        // var currentFolder = "test";
-        this.setState({
-          isLoading: false,
-          files: response.data,
-          currentFolder: split[1]
-        });
+        if (response.success) {
+          var split = response.data[0].Key.split("/");
 
-        console.log("currentFolder: ", this.state.currentFolder);
+          this.setState({
+            files: response.data,
+            currentFolder: split[1]
+          });
+          // console.log("hmm", this.state.files);
+
+          // this.state.files.map(function(file, index) {
+          //   var date = new Date(file.LastModified).toString();
+          //   this.state.files[index].LastModified = date;
+          //   console.log(index, file.LastModified);
+          // });
+
+          console.log("currentFolder: ", this.state.currentFolder);
+        } else {
+          this.setState({
+            files: [],
+            currentFolder: null
+          });
+        }
       });
+    this.setState({ isLoading: false });
   }
 
   downloadAllFiles = e => {
@@ -64,26 +103,13 @@ class ListFiles extends Component {
     };
     fetch(url, {
       method: "GET"
-      // body: JSON.stringify(obj),
-      // headers: {
-      // "Content-Type": "application/json"
-      // }
     });
-    // .then(res => res.json())
-    // .catch(error => console.error("Error:", error))
-    // .then(response => {
-    //   this.setState({
-    //     isLoading: false
-    //     // files: response.data
-    //   });
-    //   console.log(response);
-    // });
   };
 
   deleteFile = async (e, Key) => {
     e.preventDefault();
     this.setState({ isLoading: true });
-    console.log(Key);
+    // console.log(Key);
     var url = "http://localhost:8000/deletefile";
     var obj = {
       Key: Key
@@ -94,7 +120,6 @@ class ListFiles extends Component {
       body: JSON.stringify(obj),
       headers: {
         "Content-Type": "application/json"
-        // "Access-Control-Allow-Origin": "*"
       }
     })
       .then(res => res.json())
@@ -103,13 +128,34 @@ class ListFiles extends Component {
         console.log(response);
       })
       .then(this.fetchdata);
-
-    // let data = this.state.files;
-    // const newData = data.map(d => ({ ...d }));
-    // console.log("newData", newData);
-    // this.setState({ files: newData, isLoading: false });
-    // console.log("newFiles", this.state.files);
   };
+
+  async deleteAllFiles(e) {
+    e.preventDefault();
+    var Key = [];
+    this.state.files.map(function(file) {
+      Key.push({ Key: file.Key });
+    });
+    // console.log(data);
+    var url = "http://localhost:8000/deleteallfiles";
+    var obj = {
+      Key: Key
+    };
+
+    fetch(url, {
+      method: "DELETE",
+      body: JSON.stringify(obj),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => {
+        console.log(response);
+      })
+      .then(this.fetchdata);
+  }
 
   render() {
     const spinner = (
@@ -129,23 +175,46 @@ class ListFiles extends Component {
         <div class="block px-4 py-2">
           <h1 className="text-black font-bold text-xl">List Files</h1>
         </div>
-        <div class="block px-4 py-3">
-          <a
-            href={
-              "http://localhost:8000/download/" +
-              this.state.username +
-              "/" +
-              this.state.currentFolder
-            }
-          >
-            <button class="bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2">
+        {this.state.currentFolder ? (
+          <div class="block px-4 py-3">
+            <a
+              href={
+                "http://localhost:8000/download/" +
+                this.state.username +
+                "/" +
+                this.state.currentFolder
+              }
+            >
+              <button class="bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2">
+                <span>Download All</span>
+              </button>
+            </a>
+            <a onClick={e => this.deleteAllFiles(e)}>
+              <button class="bg-red-300 hover:bg-red-400 text-gray-800 font-bold p-2 rounded inline-flex items-center">
+                <span>Delete All</span>
+              </button>
+            </a>
+          </div>
+        ) : (
+          <div class="block px-4 py-3">
+            <button
+              disabled
+              class="cursor-not-allowed bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2"
+            >
               <span>Download All</span>
             </button>
-            <button class="bg-red-300 hover:bg-red-400 text-gray-800 font-bold p-2 rounded inline-flex items-center">
-              <span>Delete All</span>
-            </button>
-          </a>
-        </div>
+            <a>
+              <button
+                onClick={e => this.deleteAllFiles(e)}
+                disabled
+                class="cursor-not-allowed bg-red-300 hover:bg-red-400 text-gray-800 font-bold p-2 rounded inline-flex items-center"
+              >
+                <span>Delete All</span>
+              </button>
+            </a>
+          </div>
+        )}
+
         <div className="w-auto block px-4 py-2  max-h-screen">
           <ReactTable
             data={this.state.files}
@@ -175,7 +244,11 @@ class ListFiles extends Component {
                 accessor: "LastModified", // String-based value accessors!
                 Cell: row => {
                   var date = Date(row.row.LastModified);
-                  return <span className="text">{date}</span>;
+                  return (
+                    <span className="text">
+                      {new Date(row.row.LastModified).toLocaleString()}
+                    </span>
+                  );
                 }
               },
               {
@@ -210,7 +283,8 @@ class ListFiles extends Component {
                       </a>
                     </div>
                     <div className="mr-2 inline">
-                      <a onClick={e => this.deleteFile(e, row.row.Key)}>
+                      {/* <a onClick={e => this.deleteFile(e, row.row.Key)}> */}
+                      <a onClick={e => this.submit(e, row.row.Key)}>
                         <button class="bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-1 px-2 rounded inline-flex items-center">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
