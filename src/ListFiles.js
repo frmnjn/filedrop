@@ -52,28 +52,37 @@ class ListFiles extends Component {
   }
 
   async fetchdata() {
-    var url = "http://localhost:8000/getlistfiles";
+    // var url = "http://localhost:8000/getlistfiles";
+    var url =
+      "https://xcwysgm0f6.execute-api.ap-southeast-1.amazonaws.com/test1/filedrop";
+    // var obj = {
+    //   username: this.state.username,
+    //   folder: this.props.match.params.folder
+    // };
     var obj = {
-      username: this.state.username,
-      folder: this.props.match.params.folder
+      body: {
+        username: this.state.username,
+        droplinkName: this.props.match.params.folder
+      }
     };
 
     await fetch(url, {
       method: "POST",
       body: JSON.stringify(obj),
       headers: {
-        "Content-Type": "application/json",
-        authorization: localStorage.getItem("token")
+        // "Content-Type": "application/json"
+        // authorization: localStorage.getItem("token")
+        // "Access-Control-Allow-Origin": "*"
       }
     })
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
-        if (response.success) {
-          var split = response.data[0].Key.split("/");
+        if (response) {
+          var split = response.body.data[0].Key.split("/");
 
           this.setState({
-            files: response.data,
+            files: response.body.data,
             currentFolder: split[1]
           });
           // console.log("hmm", this.state.files);
@@ -261,7 +270,7 @@ class ListFiles extends Component {
                     <div className="mr-2 inline">
                       <a
                         href={
-                          "http://d1u37cwdvjwb8j.cloudfront.net/" + row.row.Key
+                          "http://d31dnmp7lgwbvu.cloudfront.net/" + row.row.Key
                         }
                       >
                         <button
