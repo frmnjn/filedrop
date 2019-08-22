@@ -45,11 +45,14 @@ class DropLinkCard extends Component {
     var message;
     e.preventDefault();
     console.log(id);
-    var url = "http://localhost:8000/deletedroplink";
+    var url =
+      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/deletedroplink";
     var obj = {
-      id: id,
-      ownerUsername: this.props.username,
-      dropLinkName: this.props.name
+      body: {
+        droplinkId: id,
+        ownerUsername: this.props.username,
+        droplinkName: this.props.name
+      }
     };
 
     fetch(url, {
@@ -62,7 +65,7 @@ class DropLinkCard extends Component {
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
-        message = response.message;
+        message = response.body.message;
         this.confirm(message);
         console.log(response);
       });

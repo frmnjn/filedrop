@@ -16,18 +16,20 @@ class CreateDropLink extends Component {
   }
   handleForm = e => {
     e.preventDefault();
-    var url = "http://localhost:8000/createdroplink";
+    var url =
+      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/createdroplink";
     var obj = {
-      ownerUsername: this.state.username,
-      dropLinkName: this.state.dropLinkName
+      body: {
+        ownerUsername: this.state.username,
+        droplinkName: this.state.dropLinkName
+      }
     };
 
     fetch(url, {
       method: "POST",
       body: JSON.stringify(obj),
       headers: {
-        "Content-Type": "application/json",
-        authorization: localStorage.getItem("token")
+        "Content-Type": "application/json"
       }
     })
       .then(res => res.json())
@@ -36,7 +38,7 @@ class CreateDropLink extends Component {
         this.setState({
           isCreated: true,
           shared:
-            "http://localhost:3000/drop/" +
+            "http://my-test-app-reactfiledrop-z783jrmll960.s3-website-ap-southeast-1.amazonaws.com/drop/" +
             this.state.username +
             "/" +
             this.state.dropLinkName
@@ -80,7 +82,8 @@ class CreateDropLink extends Component {
             Share this link to your friends!
             <br />
             <a href={this.state.shared}>
-              http://localhost:3000/drop/frmnjn/{this.state.dropLinkName}
+              http://my-test-app-reactfiledrop-z783jrmll960.s3-website-ap-southeast-1.amazonaws.com/drop/frmnjn/
+              {this.state.dropLinkName}
             </a>
           </p>
         </p>

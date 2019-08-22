@@ -17,20 +17,25 @@ class Drop extends Component {
 
   componentDidMount() {
     var obj = {
-      ownerUsername: this.props.match.params.username,
-      droplink: this.props.match.params.droplink
+      body: {
+        ownerUsername: this.props.match.params.username,
+        droplinkName: this.props.match.params.droplink
+      }
     };
-    fetch("http://localhost:8000/checkdroplink", {
-      method: "POST",
-      body: JSON.stringify(obj),
-      headers: { "Content-Type": "application/json" }
-    })
+    fetch(
+      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/checkdroplink",
+      {
+        method: "POST",
+        body: JSON.stringify(obj),
+        headers: { "Content-Type": "application/json" }
+      }
+    )
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
         this.setState({
           linkChecked: true,
-          linkValid: response.success
+          linkValid: response.body.success
         });
         //console.log("Success:", response);
       });
@@ -115,7 +120,7 @@ class Drop extends Component {
     };
     axios
       .post(
-        "http://localhost:8000/drop/" +
+        "ec2-3-1-85-193.ap-southeast-1.compute.amazonaws.com:3333/drop/" +
           this.props.match.params.username +
           "/" +
           this.props.match.params.droplink,

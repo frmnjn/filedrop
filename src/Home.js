@@ -19,13 +19,17 @@ class Home extends Component {
   componentDidMount() {
     // console.log("ownerId", this.state.id);
     // console.log("token", localStorage.getItem("token"));
-    var url = "http://localhost:8000/getdroplinks";
+    var url =
+      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/getdroplinks";
     var obj = {
-      ownerUsername: this.state.ownerUsername
+      body: {
+        ownerUsername: "frmnjn"
+      }
     };
 
     fetch(url, {
       method: "POST",
+      // mode: "no-cors",
       body: JSON.stringify(obj),
       headers: {
         "Content-Type": "application/json",
@@ -35,9 +39,10 @@ class Home extends Component {
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
+        console.log(response);
         this.setState({
           isLoading: true,
-          droplinks: response.droplinks
+          droplinks: response.body.data.Items
         });
         console.log(this.state.droplinks);
       });
@@ -70,9 +75,9 @@ class Home extends Component {
           {droplinks.map(function(droplink) {
             return (
               <DropLinkCard
-                name={droplink.name}
+                name={droplink.droplinkName}
                 username={droplink.ownerUsername}
-                id={droplink.id}
+                id={droplink.droplinkId}
               />
             );
           })}

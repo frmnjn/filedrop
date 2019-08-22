@@ -54,7 +54,7 @@ class ListFiles extends Component {
   async fetchdata() {
     // var url = "http://localhost:8000/getlistfiles";
     var url =
-      "https://xcwysgm0f6.execute-api.ap-southeast-1.amazonaws.com/test1/filedrop";
+      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/getlistfiles";
     // var obj = {
     //   username: this.state.username,
     //   folder: this.props.match.params.folder
@@ -78,12 +78,13 @@ class ListFiles extends Component {
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
-        if (response) {
-          var split = response.body.data[0].Key.split("/");
+        if (response.body.data != "there is no data") {
+          console.log(response.body.data);
+          // var split = response.body.data[0].Key.split("/");
 
           this.setState({
-            files: response.body.data,
-            currentFolder: split[1]
+            files: response.body.data
+            // currentFolder: split[1]
           });
           // console.log("hmm", this.state.files);
 
