@@ -23,7 +23,7 @@ class Home extends Component {
       "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/getdroplinks";
     var obj = {
       body: {
-        ownerUsername: "frmnjn"
+        ownerUsername: this.state.ownerUsername
       }
     };
 
