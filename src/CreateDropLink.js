@@ -12,11 +12,13 @@ class CreateDropLink extends Component {
       username: props.username,
       dropLinkName: "",
       isCreated: false,
+      processing: false,
       shared: null
     };
   }
   handleForm = e => {
     e.preventDefault();
+    this.setState({ processing: true });
     var url =
       "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/createdroplink";
     var obj = {
@@ -47,6 +49,7 @@ class CreateDropLink extends Component {
         });
         console.log("Server Response:", response);
       });
+    this.setState({ processing: false });
   };
   handleInput = e => {
     e.preventDefault();
@@ -61,7 +64,7 @@ class CreateDropLink extends Component {
           sizeUnit={"px"}
           size={30}
           color={"#38B2AC"}
-          loading={this.state.isAuthenticating}
+          loading={true}
         />
         Creating Droplink ...
       </div>
@@ -91,7 +94,8 @@ class CreateDropLink extends Component {
         </p>
       </div>
     );
-    return (
+
+    const view = (
       <div className="flex">
         <div className="w-1/3" />
         <div className="w-1/3 mt-10 p-4 bg-white">
@@ -124,6 +128,8 @@ class CreateDropLink extends Component {
         </div>
       </div>
     );
+
+    return <div>{this.state.processing ? spinner : view}</div>;
   }
 }
 
