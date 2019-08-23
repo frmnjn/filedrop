@@ -5,6 +5,7 @@ import ReactTable from "react-table";
 import "../node_modules/react-table/react-table.css";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import helper from "./url";
 
 class ListFiles extends Component {
   constructor(props) {
@@ -80,11 +81,11 @@ class ListFiles extends Component {
       .then(response => {
         if (response.body.data != "there is no data") {
           console.log(response.body.data);
-          // var split = response.body.data[0].Key.split("/");
+          var split = response.body.data[0].Key.split("/");
 
           this.setState({
-            files: response.body.data
-            // currentFolder: split[1]
+            files: response.body.data,
+            currentFolder: split[1]
           });
           // console.log("hmm", this.state.files);
 
@@ -105,9 +106,22 @@ class ListFiles extends Component {
     this.setState({ isLoading: false });
   }
 
+  // downloadFile(Key) {
+  //   let url = "https://d1u37cwdvjwb8j.cloudfront.net/" + Key;
+  //   return fetch(url, {
+  //     method: "GET"
+  //   })
+  //     .then(function(resp) {
+  //       return resp.blob();
+  //     })
+  //     .then(function(blob) {
+  //       download(blob);
+  //     });
+  // }
+
   downloadAllFiles = e => {
     e.preventDefault();
-    var url = "http://localhost:8000/downloadzip";
+    var url = helper.url.ec2 + "/downloadzip";
     var obj = {
       test: this.state.files
     };
@@ -120,9 +134,12 @@ class ListFiles extends Component {
     e.preventDefault();
     this.setState({ isLoading: true });
     // console.log(Key);
-    var url = "http://localhost:8000/deletefile";
+    var url =
+      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/deletefile";
     var obj = {
-      Key: Key
+      body: {
+        Key: Key
+      }
     };
 
     fetch(url, {
@@ -142,14 +159,18 @@ class ListFiles extends Component {
 
   async deleteAllFiles(e) {
     e.preventDefault();
+    this.setState({ isLoading: true });
     var Key = [];
     this.state.files.map(function(file) {
       Key.push({ Key: file.Key });
     });
     // console.log(data);
-    var url = "http://localhost:8000/deleteallfiles";
+    var url =
+      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/deleteallfiles";
     var obj = {
-      Key: Key
+      body: {
+        Key: Key
+      }
     };
 
     fetch(url, {
@@ -182,34 +203,35 @@ class ListFiles extends Component {
 
     const viewLoaded = (
       <div className="bg-gray-300">
-        <div class="block px-4 py-2">
+        <div className="block px-4 py-2">
           <h1 className="text-black font-bold text-xl">List Files</h1>
         </div>
         {this.state.currentFolder ? (
-          <div class="block px-4 py-3">
+          <div className="block px-4 py-3">
             <a
               href={
-                "http://localhost:8000/download/" +
+                helper.url.ec2 +
+                "/download/" +
                 this.state.username +
                 "/" +
                 this.state.currentFolder
               }
             >
-              <button class="bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2">
+              <button className="bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2">
                 <span>Download All</span>
               </button>
             </a>
             <a onClick={e => this.deleteAllFiles(e)}>
-              <button class="bg-red-300 hover:bg-red-400 text-gray-800 font-bold p-2 rounded inline-flex items-center">
+              <button className="bg-red-300 hover:bg-red-400 text-gray-800 font-bold p-2 rounded inline-flex items-center">
                 <span>Delete All</span>
               </button>
             </a>
           </div>
         ) : (
-          <div class="block px-4 py-3">
+          <div className="block px-4 py-3">
             <button
               disabled
-              class="cursor-not-allowed bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2"
+              className="cursor-not-allowed bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2"
             >
               <span>Download All</span>
             </button>
@@ -217,7 +239,7 @@ class ListFiles extends Component {
               <button
                 onClick={e => this.deleteAllFiles(e)}
                 disabled
-                class="cursor-not-allowed bg-red-300 hover:bg-red-400 text-gray-800 font-bold p-2 rounded inline-flex items-center"
+                className="cursor-not-allowed bg-red-300 hover:bg-red-400 text-gray-800 font-bold p-2 rounded inline-flex items-center"
               >
                 <span>Delete All</span>
               </button>
@@ -271,8 +293,9 @@ class ListFiles extends Component {
                     <div className="mr-2 inline">
                       <a
                         href={
-                          "http://d31dnmp7lgwbvu.cloudfront.net/" + row.row.Key
+                          "https://d1u37cwdvjwb8j.cloudfront.net/" + row.row.Key
                         }
+                        // onClick={e => this.downloadFile(e, row.row.Key)}
                       >
                         <button
                           class="bg-green-300 hover:bg-green-400 text-gray-800 font-bold py-1 px-2 rounded inline-flex items-center"
@@ -285,7 +308,7 @@ class ListFiles extends Component {
                             height="20"
                           >
                             <path
-                              class="heroicon-ui"
+                              className="heroicon-ui"
                               d="M11 14.59V3a1 1 0 0 1 2 0v11.59l3.3-3.3a1 1 0 0 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 0 1 1.4-1.42l3.3 3.3zM3 17a1 1 0 0 1 2 0v3h14v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3z"
                             />
                           </svg>
@@ -295,7 +318,7 @@ class ListFiles extends Component {
                     <div className="mr-2 inline">
                       {/* <a onClick={e => this.deleteFile(e, row.row.Key)}> */}
                       <a onClick={e => this.submit(e, row.row.Key)}>
-                        <button class="bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-1 px-2 rounded inline-flex items-center">
+                        <button className="bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-1 px-2 rounded inline-flex items-center">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
@@ -303,7 +326,7 @@ class ListFiles extends Component {
                             height="20"
                           >
                             <path
-                              class="heroicon-ui"
+                              className="heroicon-ui"
                               d="M16.24 14.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 0 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12l2.83 2.83z"
                             />
                           </svg>

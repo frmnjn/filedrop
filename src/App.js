@@ -15,7 +15,6 @@ import ChangePasswordConfirmation from "./ChangePasswordConfirmation";
 import ForgotPasswordVerification from "./ForgotPasswordVerification";
 import Welcome from "./Welcome";
 import CreateDropLink from "./CreateDropLink";
-import DownloadFile from "./DownloadFile";
 import GuestRoute from "./components/GuestRoute";
 import AuthRoute from "./components/AuthRoute";
 import Layout from "./components/Layout";
@@ -111,7 +110,6 @@ class App extends Component {
               path="/changepasswordconfirmation"
               component={ChangePasswordConfirmation}
             />
-            <Route exact path="/downloadfile" component={DownloadFile} />
             <Route exact path="/dropzone" component={DropZone} />
             <Route exact path="/dropcopy" component={DropCopy} />
             <AuthRoute exact path="/profile/edit" component={EditAkun} />

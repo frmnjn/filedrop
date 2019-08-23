@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";
 import "./App.css";
-
+import helper from "./url";
 class Drop extends Component {
   constructor(props) {
     super(props);
@@ -22,14 +22,11 @@ class Drop extends Component {
         droplinkName: this.props.match.params.droplink
       }
     };
-    fetch(
-      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/checkdroplink",
-      {
-        method: "POST",
-        body: JSON.stringify(obj),
-        headers: { "Content-Type": "application/json" }
-      }
-    )
+    fetch(helper.url.lambda + "/checkdroplink", {
+      method: "POST",
+      body: JSON.stringify(obj),
+      headers: { "Content-Type": "application/json" }
+    })
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
@@ -47,7 +44,15 @@ class Drop extends Component {
     //define message container
     let err = [];
     // list allow mime type
-    const types = ["image/png", "image/jpeg", "image/gif", "image/jpeg"];
+    const types = [
+      "image/png",
+      "image/jpeg",
+      "image/gif",
+      "image/jpeg",
+      "application/pdf",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document", //.docx files
+      "text/plain" //.txt files
+    ];
     // loop access array
     for (var x = 0; x < files.length; x++) {
       // compare file type find doesn't matach
@@ -105,39 +110,56 @@ class Drop extends Component {
     }
   };
   onClickHandler = () => {
+    console.log(this.state.selectedFile);
     const data = new FormData();
     for (var x = 0; x < this.state.selectedFile.length; x++) {
       data.append("file", this.state.selectedFile[x]);
     }
-    var config = {
-      onUploadProgress: progressEvent => {
-        console.log("uploading...");
-        // var percentCompleted = Math.round(
-        //   (progressEvent.loaded * 100) / progressEvent.total
-        // );
-        // this.setState({ progressVal: percentCompleted }); //How set state with percentCompleted?
-      }
-    };
-    axios
-      .post(
-        "ec2-3-1-85-193.ap-southeast-1.compute.amazonaws.com:3333/drop/" +
-          this.props.match.params.username +
-          "/" +
-          this.props.match.params.droplink,
-        data,
-        config
-      )
-      .then(res => {
-        // then print response status
-        console.log("upload success");
-        console.log(res.data);
-        this.setState({
-          uploadFinished: true
-        });
-      })
-      .catch(err => {
-        // then print response status
-        console.log("upload fail");
+    // var config = {
+    //   onUploadProgress: function(onUploadProgress) {
+    //     console.log("uploading...");
+    //   }
+    // };
+    // axios
+    //   .post(
+    //     "ec2-3-1-85-193.ap-southeast-1.compute.amazonaws.com:3333/drop/" +
+    //       this.props.match.params.username +
+    //       "/" +
+    //       this.props.match.params.droplink,
+    //     data,
+    //     config
+    //   )
+    //   .then(res => {
+    //     // then print response status
+    //     console.log("upload success");
+    //     console.log(res.data);
+    //     this.setState({
+    //       uploadFinished: true
+    //     });
+    //   })
+    //   .catch(err => {
+    //     // then print response status
+    //     console.log("upload fail");
+    //   });
+    var url =
+      helper.url.ec2 +
+      "/drop/" +
+      this.props.match.params.username +
+      "/" +
+      this.props.match.params.droplink;
+
+    fetch(url, {
+      method: "POST",
+      // headers: {
+      //   mode: "no-cors"
+      // },
+      body: data
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => {
+        console.log(response);
+        this.setState({ uploadFinished: true });
       });
   };
 

@@ -72,9 +72,10 @@ class Home extends Component {
       <div className="">
         <div class="text-black px-4 py-2 font-bold text-xl">Your DropLinks</div>
         <div class="w-full h-12 p-6">
-          {droplinks.map(function(droplink) {
+          {droplinks.map(function(droplink, index) {
             return (
               <DropLinkCard
+                key={index}
                 name={droplink.droplinkName}
                 username={droplink.ownerUsername}
                 id={droplink.droplinkId}

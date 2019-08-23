@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BeatLoader } from "react-spinners";
+import helper from "./url";
 
 class CreateDropLink extends Component {
   constructor(props) {
@@ -38,7 +39,8 @@ class CreateDropLink extends Component {
         this.setState({
           isCreated: true,
           shared:
-            "http://my-test-app-reactfiledrop-z783jrmll960.s3-website-ap-southeast-1.amazonaws.com/drop/" +
+            helper.url.web +
+            "/drop/" +
             this.state.username +
             "/" +
             this.state.dropLinkName
@@ -82,7 +84,7 @@ class CreateDropLink extends Component {
             Share this link to your friends!
             <br />
             <a href={this.state.shared}>
-              http://my-test-app-reactfiledrop-z783jrmll960.s3-website-ap-southeast-1.amazonaws.com/drop/frmnjn/
+              {helper.url.web}/drop/frmnjn/
               {this.state.dropLinkName}
             </a>
           </p>
