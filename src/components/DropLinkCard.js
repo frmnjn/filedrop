@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import helper from "../url";
 
 class DropLinkCard extends Component {
   submit = (e, id) => {
@@ -45,8 +46,7 @@ class DropLinkCard extends Component {
     var message;
     e.preventDefault();
     console.log(id);
-    var url =
-      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/deletedroplink";
+    var url = helper.url.lambda + "/deletedroplink";
     var obj = {
       body: {
         droplinkId: id,

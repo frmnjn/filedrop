@@ -19,8 +19,7 @@ class CreateDropLink extends Component {
   handleForm = e => {
     e.preventDefault();
     this.setState({ processing: true });
-    var url =
-      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/createdroplink";
+    var url = helper.url.lambda + "/createdroplink";
     var obj = {
       body: {
         ownerUsername: this.state.username,

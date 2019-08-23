@@ -54,8 +54,7 @@ class ListFiles extends Component {
 
   async fetchdata() {
     // var url = "http://localhost:8000/getlistfiles";
-    var url =
-      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/getlistfiles";
+    var url = helper.url.lambda + "/getlistfiles";
     // var obj = {
     //   username: this.state.username,
     //   folder: this.props.match.params.folder
@@ -134,8 +133,7 @@ class ListFiles extends Component {
     e.preventDefault();
     this.setState({ isLoading: true });
     // console.log(Key);
-    var url =
-      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/deletefile";
+    var url = helper.url.lambda + "/deletefile";
     var obj = {
       body: {
         Key: Key
@@ -165,8 +163,7 @@ class ListFiles extends Component {
       Key.push({ Key: file.Key });
     });
     // console.log(data);
-    var url =
-      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/deleteallfiles";
+    var url = helper.url.lambda + "/deleteallfiles";
     var obj = {
       body: {
         Key: Key

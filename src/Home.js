@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import BeatLoader from "react-spinners/BeatLoader";
 import DropLinkCard from "./components/DropLinkCard";
+import helper from "./url";
 
 class Home extends Component {
   constructor(props) {
@@ -19,8 +20,7 @@ class Home extends Component {
   componentDidMount() {
     // console.log("ownerId", this.state.id);
     // console.log("token", localStorage.getItem("token"));
-    var url =
-      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/getdroplinks";
+    var url = helper.url.lambda + "/getdroplinks";
     var obj = {
       body: {
         ownerUsername: this.state.ownerUsername
