@@ -27,13 +27,13 @@ class EditAkun extends Component {
           Account Settings
         </div>
         <div class="flex p-6 w-full">
-          <Link to="/">
+          {/* <Link to="/">
             <div className="flex-1 max-w-sm rounded overflow-hidden shadow-lg mr-2">
               <div className="px-6 py-4 bg-white hover:bg-orange-200">
                 <div className="font-bold text-xl mb-2">Edit Account</div>
               </div>
             </div>
-          </Link>
+          </Link> */}
           <Link to="/changepassword">
             <div className="flex-1 max-w-sm rounded overflow-hidden shadow-lg mr-2">
               <div className="px-6 py-4 bg-white hover:bg-orange-200">
