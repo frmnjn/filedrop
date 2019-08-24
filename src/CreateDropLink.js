@@ -89,7 +89,7 @@ class CreateDropLink extends Component {
             Share this link to your friends!
             <br />
             <a href={this.state.shared}>
-              {helper.url.web}/drop/frmnjn/
+              {helper.url.web}/drop/{this.state.username}/
               {this.state.dropLinkName}
             </a>
           </p>
