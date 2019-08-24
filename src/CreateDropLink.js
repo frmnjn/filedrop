@@ -10,6 +10,7 @@ class CreateDropLink extends Component {
       id: props.id,
       name: props.name,
       username: props.username,
+      email: props.email,
       dropLinkName: "",
       isCreated: false,
       processing: false,
@@ -18,11 +19,13 @@ class CreateDropLink extends Component {
   }
   handleForm = e => {
     e.preventDefault();
+    console.log(this.state.email);
     this.setState({ processing: true });
     var url = helper.url.lambda + "/createdroplink";
     var obj = {
       body: {
         ownerUsername: this.state.username,
+        ownerEmail: this.state.email,
         droplinkName: this.state.dropLinkName
       }
     };
@@ -136,7 +139,8 @@ const mapStateToProps = state => {
   return {
     id: state.auth.user.id,
     name: state.auth.user.name,
-    username: state.auth.user.username
+    username: state.auth.user.username,
+    email: state.auth.user.attributes.email
   };
 };
 

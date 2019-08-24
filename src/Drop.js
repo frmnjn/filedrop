@@ -11,7 +11,8 @@ class Drop extends Component {
       uploadFinished: false,
       progressVal: 0,
       linkValid: false,
-      linkChecked: false
+      linkChecked: false,
+      ownerEmail: null
     };
   }
 
@@ -32,9 +33,10 @@ class Drop extends Component {
       .then(response => {
         this.setState({
           linkChecked: true,
-          linkValid: response.body.success
+          linkValid: response.body.success,
+          ownerEmail: response.body.ownerEmail
         });
-        //console.log("Success:", response);
+        // console.log("Success:", this.state.ownerEmail);
       });
   }
 
@@ -160,8 +162,33 @@ class Drop extends Component {
       .then(response => {
         console.log(response);
         this.setState({ uploadFinished: true });
-      });
+      }).then(
+        this.sendNotification()
+      )
   };
+
+  sendNotification(){
+  var url = helper.url.lambda+"/sendnotification";
+  var obj = {
+    body:{
+    sendto: this.state.ownerEmail,
+    droplinkName: this.props.match.params.droplink
+    }
+  }
+
+  fetch(url, {
+    method: "POST",
+    // headers: {
+    //   mode: "no-cors"
+    // },
+    body: JSON.stringify(obj)
+  })
+    .then(res => res.json())
+    .catch(error => console.error("Error:", error))
+    .then(response => {
+      console.log(response.body);
+    });
+  }
 
   render() {
     const notify = (
