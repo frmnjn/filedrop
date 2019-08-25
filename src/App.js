@@ -43,7 +43,7 @@ class App extends Component {
 
   render() {
     const index = () => (
-      <div className="bg-gray-300">
+      <div className="bg-grey-300">
         <div>
           <div className="px-8 py-12 max-w-md mx-auto sm:max-w-xl lg:max-w-full lg:w-1/2 lg:py-24 lg:px-12">
             <div className="xl:max-w-lg xl:ml-auto">
@@ -52,19 +52,14 @@ class App extends Component {
                 src={require("./assets/img/logo-blue.svg")}
                 alt="Workcation"
               /> */}
-              <div className="h-10">
-                <svg
-                  className="fill-current h-8 w-8 ml-3 mr-2"
-                  width="54"
-                  height="54"
-                  viewBox="0 0 54 54"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z" />
-                </svg>
-                <span className="font-semibold text-xl tracking-tight">
+              <div className="h-5">
+                <img
+                  className="h-15 w-20"
+                  src="https://d1u37cwdvjwb8j.cloudfront.net/FILEDROP2.png"
+                />
+                {/* <span className="font-semibold text-xl tracking-tight">
                   FileDrop
-                </span>
+                </span> */}
               </div>
 
               <h1 className="mt-6 text-2xl font-bold text-gray-900 leading-tight sm:mt-8 sm:text-4xl lg:text-3xl xl:text-4xl">
