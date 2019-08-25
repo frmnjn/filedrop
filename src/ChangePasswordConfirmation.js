@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { Auth } from "aws-amplify";
 import "./App.css";
 
 class ChangePasswordConfirmation extends Component {
