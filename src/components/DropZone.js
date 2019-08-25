@@ -61,9 +61,32 @@ class DropZone extends Component {
       .then(response => {
         fields = response.fields;
         uploadUrl = response.url;
-      });
+      })
+      .then(this.sendNotification());
     return { fields, url: uploadUrl };
   };
+
+  sendNotification() {
+    var url = helper.url.lambda + "/sendnotification";
+    var obj = {
+      body: {
+        sendto: this.state.ownerEmail,
+        droplinkName: this.props.match.params.droplink
+      }
+    };
+    fetch(url, {
+      method: "POST",
+      // headers: {
+      //   mode: "no-cors"
+      // },
+      body: JSON.stringify(obj)
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => {
+        console.log(response.body);
+      });
+  }
 
   // called every time a file's `status` changes
   handleChangeStatus = ({ meta, file }, status) => {
