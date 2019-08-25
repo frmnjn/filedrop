@@ -134,7 +134,7 @@ class ListFiles extends Component {
         arrayfiles: Key
       }
     };
-    var url = helper.url.lambda + "/testzip";
+    var url = helper.url.lambda + "/downloadallfiles";
     fetch(url, {
       method: "POST",
       body: JSON.stringify(obj),

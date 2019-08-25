@@ -51,14 +51,11 @@ class DropZone extends Component {
         type: type
       }
     };
-    await fetch(
-      "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api/test",
-      {
-        method: "POST",
-        body: JSON.stringify(obj),
-        headers: { "Content-Type": "application/json" }
-      }
-    )
+    await fetch(helper.url.lambda + "/upload", {
+      method: "POST",
+      body: JSON.stringify(obj),
+      headers: { "Content-Type": "application/json" }
+    })
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => {
