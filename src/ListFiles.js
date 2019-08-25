@@ -6,6 +6,7 @@ import "../node_modules/react-table/react-table.css";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import helper from "./url";
+import { Redirect } from "react-router-dom";
 
 class ListFiles extends Component {
   constructor(props) {
@@ -120,14 +121,41 @@ class ListFiles extends Component {
 
   downloadAllFiles = e => {
     e.preventDefault();
-    var url = helper.url.ec2 + "/downloadzip";
-    var obj = {
-      test: this.state.files
-    };
-    fetch(url, {
-      method: "GET"
+    var Key = [];
+    this.state.files.map(function(file) {
+      var split = file.Key.split("/");
+      Key.push(split[2]);
     });
+    console.log(Key);
+    var obj = {
+      body: {
+        ownerUsername: this.state.username,
+        droplink: this.state.currentFolder,
+        arrayfiles: Key
+      }
+    };
+    var url = helper.url.lambda + "/testzip";
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(obj),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => {
+        console.log(response);
+        this.getzipped(response.key);
+      })
+      .then();
   };
+
+  getzipped(key) {
+    console.log(key);
+    var url = helper.url.cloudfront + "/" + key;
+    window.location = url;
+  }
 
   deleteFile = async (e, Key) => {
     e.preventDefault();
@@ -206,12 +234,13 @@ class ListFiles extends Component {
         {this.state.currentFolder ? (
           <div className="block px-4 py-3">
             <a
-              href={
-                helper.url.ec2 +
-                "/download/" +
-                this.state.username +
-                "/" +
-                this.state.currentFolder
+              onClick={
+                e => this.downloadAllFiles(e)
+                // helper.url.ec2 +
+                // "/download/" +
+                // this.state.username +
+                // "/" +
+                // this.state.currentFolder
               }
             >
               <button className="bg-green-300 hover:bg-green-400 text-gray-800 p-2 font-bold rounded inline-flex items-center mr-2">

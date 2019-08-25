@@ -2,6 +2,7 @@
   "url": {
     "lambda": "https://mfb5knaaei.execute-api.ap-southeast-1.amazonaws.com/api",
     "ec2": "http://filedrop-369939715.ap-southeast-1.elb.amazonaws.com:3333",
-    "web": "http://filedrop-frontend-reactfiledrop-1j3igme8idi6.s3-website-ap-southeast-1.amazonaws.com"
+    "web": "http://filedrop-frontend-reactfiledrop-1j3igme8idi6.s3-website-ap-southeast-1.amazonaws.com",
+    "cloudfront": "https://d1u37cwdvjwb8j.cloudfront.net"
   }
 }

@@ -95,7 +95,7 @@ class App extends Component {
             <Route exact path="/" component={index} />
             <Route exact path="/welcome" component={Welcome} />
             {/* <GuestRoute path="/drop" component={Drop} /> */}
-            <Route exact path="/drop/:username/:droplink" component={Drop} />
+            {/* <Route exact path="/drop/:username/:droplink" component={Drop} /> */}
             <GuestRoute exact path="/login" component={Login} />
             <GuestRoute exact path="/register" component={Register} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
@@ -110,7 +110,11 @@ class App extends Component {
               path="/changepasswordconfirmation"
               component={ChangePasswordConfirmation}
             />
-            <Route exact path="/dropzone" component={DropZone} />
+            <Route
+              exact
+              path="/drop/:username/:droplink"
+              component={DropZone}
+            />
             <Route exact path="/dropcopy" component={DropCopy} />
             <AuthRoute exact path="/profile/edit" component={EditAkun} />
             <AuthRoute exact path="/home" component={Home} />
