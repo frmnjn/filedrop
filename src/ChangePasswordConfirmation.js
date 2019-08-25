@@ -1,8 +1,20 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import "./App.css";
 
 class ChangePasswordConfirmation extends Component {
+  async handleChangePassword(e) {
+    e.preventDefault();
+    try {
+      await Auth.signOut();
+      this.props.logout();
+      this.props.SET_USER(null);
+      this.props.history.push("/login");
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
   render() {
     return (
       // <div>
@@ -26,7 +38,10 @@ class ChangePasswordConfirmation extends Component {
               <p>
                 click{" "}
                 <span>
-                  <Link to="/login" className="hover:underline text-blue-500">
+                  <Link
+                    onClick={e => this.handleChangePassword(e)}
+                    className="hover:underline text-blue-500"
+                  >
                     here
                   </Link>
                 </span>{" "}
@@ -40,4 +55,14 @@ class ChangePasswordConfirmation extends Component {
   }
 }
 
-export default ChangePasswordConfirmation;
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch({ type: "SET_LOGOUT" }),
+    SET_USER: user => dispatch({ type: "SET_USER", payload: user })
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ChangePasswordConfirmation);
